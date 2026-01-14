@@ -25,7 +25,7 @@ PORT     STATE SERVICE
 8080/tcp open  http-proxy
 
 we will start enumerating the webpage at port 80. we see some pictures of cats. in the top right corner, there is a about icon which shows more details about the image we are viewing. lets use this to get some hidden details in the cat images. after some manual enumeration we find out that in the description of the cat image timo-volz there is a message which says "strip hidden metadata" maybe there is something hidden in this image. lets save this image on our system and run some metadata exfiltration commands on this image.
-
+![timo-volz](https://github.com/realatharva15/cat_pictures_2_writeup/blob/main/images/Screenshot%202026-01-14%20at%2013-13-30%20Lychee%20-%20timo-volz.png)
 ```bash
 exiftool timo-volz.jpg
 ```
