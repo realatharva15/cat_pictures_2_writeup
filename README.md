@@ -81,14 +81,11 @@ NOTE: once you login the gitea, the firefox browser will block browsing to the g
 
 this i cannot show you the url directly but i will show you the images of the webpage where the domain is localhost and when the domain is the target ip address.
 lets clone this repository to our attacker machine and then we will enumerate if from our machine offline. 
-```bash
-git clone <url_of_gitea_instance>
-```
+
 enter the username and the password when prompted. we will find out that there are 3 files, flag1.txt, playbook.yaml and README.md
  we find the flag1.txt here in the repository and submit it. inside the playbook.yml file we find a username which might be able t
 o grant us access to the ssh shell. lets try using hydra to see if that user's ssh password can be bruteforced or not.
 
-username:bismuth
 ![giteas_interace](https://github.com/realatharva15/cat_pictures_2_writeup/blob/main/images/Screenshot%202026-01-14%20at%2013-38-49%20samarium_ansible%20-%20ansible%20-%20Gitea%20Git%20with%20a%20cup%20of%20tea.png)
 now we will visit the OliveTin website on the port 1337 and find out a way to get a shell on the system. we find out that there are 4 buttons on the webiste which carry out 4 different tasks.
 
@@ -111,7 +108,7 @@ make sure you start a netcat listener in one of your terminals
 ```bash
 nc -lnvp 4444
 ```
-now inorder to trigger the reverse shell we will click on the Ansible playbook button which is the 2nd button on the webiste. and we will be granted a reverseshell as bismuth. since the shell is not a proper tty, we will copy the id_rsa of bismuth which is available at the /home/bismuth/.ssh/id_rsa path on the system
+now inorder to trigger the reverse shell we will click on the Ansible playbook button which is the 2nd button on the webiste. and we will be granted a reverseshell as bismuth. since the shell is not a proper tty, we will copy the id_rsa of bismuth which is available at the /home/bismuth/.ssh/id_rsa path on the system. we do this for 2 reasons: the shell is highly unreliable and we may logout of the shell even if we press Ctrl+C which will cause a keyboard interrupt and stop the netcat listener. the second reason is that a proper ssh shell gives us an overall better experience while enumerating.
 
 ```bash
 cat /home/bismuth/.ssh/id_rsa
