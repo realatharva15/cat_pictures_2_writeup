@@ -71,7 +71,7 @@ In CTF/penetration testing contexts, Gitea instances often contain:
     Configuration files with passwords
 
     Deployment scripts that might reveal other services or vulnerabilities
-we will visit this gitea webpage on the port 3000 and enter the credentials we found isnide the note
+we will visit this gitea webpage on the port 3000 and enter the credentials we found inside the note
 
 ```bash
 http://<target_ip>:3000
