@@ -76,17 +76,22 @@ we will visit this gitea webpage on the port 3000 and enter the credentials we f
 ```bash
 http://<target_ip>:3000
 ```
-![erorr_at_giteas](https://github.com/realatharva15/cat_pictures_2_writeup/blob/main/images/Screenshot%202026-01-14%20at%2013-38-04%20Problem%20loading%20page.png)
+
 NOTE: once you login the gitea, the firefox browser will block browsing to the gitea main page wince the ip will change from the target ip to localhost. in order to fix that, just re-type the target ip address in the url in the place of localhost.
 
-this i cannot show you the url directly but i will show you the images of the webpage where the domain is localhost and when the domain is the target ip address.
+i cannot show you the url directly but i will show you the images of the webpage where the domain is localhost and when the domain is the target ip address.
 lets clone this repository to our attacker machine and then we will enumerate if from our machine offline. 
+
+when the domain is localhost:
+![erorr_at_giteas](https://github.com/realatharva15/cat_pictures_2_writeup/blob/main/images/Screenshot%202026-01-14%20at%2013-38-04%20Problem%20loading%20page.png)
+
+when the domain is the target ip address:
+![giteas_interace](https://github.com/realatharva15/cat_pictures_2_writeup/blob/main/images/Screenshot%202026-01-14%20at%2013-38-49%20samarium_ansible%20-%20ansible%20-%20Gitea%20Git%20with%20a%20cup%20of%20tea.png)
 
 enter the username and the password when prompted. we will find out that there are 3 files, flag1.txt, playbook.yaml and README.md
  we find the flag1.txt here in the repository and submit it. inside the playbook.yml file we find a username which might be able t
 o grant us access to the ssh shell. lets try using hydra to see if that user's ssh password can be bruteforced or not.
 
-![giteas_interace](https://github.com/realatharva15/cat_pictures_2_writeup/blob/main/images/Screenshot%202026-01-14%20at%2013-38-49%20samarium_ansible%20-%20ansible%20-%20Gitea%20Git%20with%20a%20cup%20of%20tea.png)
 now we will visit the OliveTin website on the port 1337 and find out a way to get a shell on the system. we find out that there are 4 buttons on the webiste which carry out 4 different tasks.
 
 ```bash
