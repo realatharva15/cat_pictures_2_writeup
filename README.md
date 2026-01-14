@@ -1,8 +1,8 @@
 # Try Hack Me - Cat Pictures 2
 # Author: Atharva Bordavekar
 # Difficulty: Easy
-# Points: 
-# Vulnerabilities:
+# Points: 90
+# Vulnerabilities: Hidden metadata in image, RCE via repository hijacking, SUDO version exploit (CVE-2021-3156)
 
 # Phase 1 - Reconnaissance:
 nmap scan:
@@ -11,11 +11,17 @@ nmap -p- --min-rate=1000 <target_ip>
 ```
 
 PORT     STATE SERVICE
+
 22/tcp   open  ssh
+
 80/tcp   open  http
+
 222/tcp  open  rsh-spx
+
 1337/tcp open  waste
+
 3000/tcp open  ppp
+
 8080/tcp open  http-proxy
 
 we will start enumerating the webpage at port 80. we see some pictures of cats. in the top right corner, there is a about icon which shows more details about the image we are viewing. lets use this to get some hidden details in the cat images. after some manual enumeration we find out that in the description of the cat image timo-volz there is a message which says "strip hidden metadata" maybe there is something hidden in this image. lets save this image on our system and run some metadata exfiltration commands on this image.
@@ -88,7 +94,8 @@ now we will visit the OliveTin website on the port 1337 and find out a way to ge
 ```bash
 http://<target_ip>:1337
 ```
-the 2nd function is important to us as the hint for the 2nd flag is directed towards the Ansible playbook function. as we already had found the ansible repository on the port 3000. after reading the contents of the playbook.yaml file, and executing the ansible playbook task by clicking on the button, we find out that the function is capable of carrying out commands on the system at the ____ line. so we will simply edit the playbook.yaml file and append a reverse shell to it. just past this block of code into the playbook.yaml file in the ansible repository and refresh the page
+# Phase 2 - Initial Foothold:
+the 2nd function is important to us as the hint for the 2nd flag is directed towards the Ansible playbook function. as we already had found the ansible repository on the port 3000. after reading the contents of the playbook.yaml file, and executing the ansible playbook task by clicking on the button, we find out that the function is capable of carrying out commands on the system. here it carries out the whoami command by default as mentioned in the playbook.yaml file. so we will simply edit the playbook.yaml file and append a reverse shell to it. just paste this block of code into the playbook.yaml file in the ansible repository and refresh the page
 
 ```bash
  - name: Reverse Shell
@@ -120,6 +127,7 @@ ssh -i bismuth_id_rsa bismuth@<target_ip>
 ```
 we have a better tty now. lets start enumerating the system. we will run the linpeas.sh script on the target system. the linpeas output didn't reveal anything useful except the fact that there is a 95% attack vector in the path,the problem was that there was no cronjob or process running as sudo on the system. so that turned out to be useless. after a few hours of manual enumeration i decided to go with the CVEs listed in the linpeas output. the sudo version was vulnerable to a common exploit (CVE-2021-3156). the link to the exploit is given in the linpeas output. so we will clone the github repository on our attacker machine and then transfer it to the targer machine as direct downloading from the target machine is not allowed
 
+# Phase 3 - Privilege Escalation:
 ```bash
 #in your browser just paste this
  https://codeload.github.com/blasty/CVE-2021-3156/zip/main
